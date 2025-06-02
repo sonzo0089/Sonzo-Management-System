@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=10.0">
+    <title>Sonzo Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="loginPage" class="container">
+        <h1>SONZO SYSTEM</h1>
+        <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" required>
+        </div>
+        <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required>
+        </div>
+        <div class="error-message" id="loginError"></div>
+        <button class="button" onclick="login()">Login</button>
+        <div class="auth-links">
+            Don't have an account? <a onclick="showSignup()">Sign up</a>
+        </div>
+    </div>
+
+    <div id="mainSystem" style="display: none;">
+        <nav class="nav-menu">
+            <ul>
+                <li><a onclick="showPage('dashboard')">Dashboard</a></li>
+                <li><a onclick="showPage('inventory')">Inventory</a></li>
+                <li><a onclick="showPage('customers')">Customers</a></li>
+                <li><a onclick="showPage('orders')">Orders</a></li>
+                <li><a onclick="showPage('reports')">Reports</a></li>
+                <li><a onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="container page">
+            <h2>Dashboard</h2>
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3>Total Sales</h3>
+                    <p>$15,750</p>
+                </div>
+                <div class="card">
+                    <h3>Active Orders</h3>
+                    <p>24</p>
+                </div>
+                <div class="card">
+                    <h3>Total Customers</h3>
+                    <p>156</p>
+                </div>
+                <div class="card">
+                    <h3>Low Stock Items</h3>
+                    <p>8</p>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3>Sales Overview</h3>
+                <p>Monthly sales chart will be displayed here</p>
+            </div>
+        </div>
+
+        <!-- Inventory Page -->
+        <div id="inventory" class="container page">
+            <h2>Inventory Management</h2>
+            <button class="button" onclick="showAddInventoryForm()">Add New Item</button>
+            <div id="addInventoryForm" style="display: none;">
+                <h3>Add New Item</h3>
+                <div class="form-group">
+                    <label for="itemName">Item Name</label>
+                    <input type="text" id="itemName" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemQuantity">Quantity</label>
+                    <input type="number" id="itemQuantity" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemPrice">Price</label>
+                    <input type="number" id="itemPrice" step="0.01" required>
+                </div>
+                <button class="button" onclick="addInventoryItem()">Save Item</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryList">
+                    <tr>
+                        <td>Product A</td>
+                        <td>50</td>
+                        <td>$29.99</td>
+                        <td><button class="button" onclick="editItem(1)">Edit</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Customers Page -->
+        <div id="customers" class="container page">
+            <h2>Customer Management</h2>
+            <button class="button" onclick="showAddCustomerForm()">Add New Customer</button>
+            <div id="addCustomerForm" style="display: none;">
+                <h3>Add New Customer</h3>
+                <div class="form-group">
+                    <label for="customerName">Customer Name</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Email</label>
+                    <input type="email" id="customerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Phone</label>
+                    <input type="tel" id="customerPhone" required>
+                </div>
+                <button class="button" onclick="addCustomer()">Save Customer</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="customerList">
+                    <tr>
+                        <td>John Doe</td>
+                        <td>john@example.com</td>
+                        <td>555-0123</td>
+                        <td><button class="button" onclick="editCustomer(1)">Edit</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Orders Page -->
+        <div id="orders" class="container page">
+            <h2>Order Management</h2>
+            <button class="button" onclick="showAddOrderForm()">Create New Order</button>
+            <div id="addOrderForm" style="display: none;">
+                <h3>Create New Order</h3>
+                <div class="form-group">
+                    <label for="orderCustomer">Customer</label>
+                    <select id="orderCustomer" required>
+                        <option value="">Select Customer</option>
+                        <option value="1">John Doe</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="orderItems">Items</label>
+                    <select id="orderItems" multiple required>
+                        <option value="1">Product A - $29.99</option>
+                    </select>
+                </div>
+                <button class="button" onclick="createOrder()">Create Order</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="orderList">
+                    <tr>
+                        <td>#001</td>
+                        <td>John Doe</td>
+                        <td>$59.98</td>
+                        <td>Pending</td>
+                        <td><button class="button" onclick="viewOrder(1)">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Reports Page -->
+        <div id="reports" class="container page">
+            <h2>Reports</h2>
+            <div class="form-group">
+                <label for="reportType">Report Type</label>
+                <select id="reportType" onchange="generateReport()">
+                    <option value="">Select Report Type</option>
+                    <option value="sales">Sales Report</option>
+                    <option value="inventory">Inventory Report</option>
+                    <option value="customers">Customer Report</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="reportDateRange">Date Range</label>
+                <select id="reportDateRange">
+                    <option value="7">Last 7 Days</option>
+                    <option value="30">Last 30 Days</option>
+                    <option value="90">Last 90 Days</option>
+                    <option value="365">Last Year</option>
+                </select>
+            </div>
+            <button class="button" onclick="generateReport()">Generate Report</button>
+            <div id="reportContent" class="chart-container">
+                <p>Select a report type and date range to generate a report.</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
